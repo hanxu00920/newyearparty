@@ -25,7 +25,7 @@ $(function() {
                 name: '三等奖'
             },
             {
-                name: '四等奖'
+                name: '幸运奖'
             },
             {
                 name: '抽红包'
