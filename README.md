@@ -9,8 +9,8 @@ mvn install<br>
 
 #### 此项目依赖微信公众号实现，可以通过[微信测试公众号](https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login)进行开发测试<br>
 抽奖主页面URL：http://host:port/index.html<br>
-二维码生成URL(ps：参数无括号)：微信页面授权获取用户信息URL，可参考[微信开放文档](https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html)<br>
-https://open.weixin.qq.com/connect/oauth2/authorize?appid=(公众号后台查询)&redirect_uri=(URL编码http://host:port/login_qrcode.html)&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect <br>
+二维码是微信“页面授权”方式URL生成的，可参考[微信开放文档](https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html)<br>
+URL(参数不带括号)：https://open.weixin.qq.com/connect/oauth2/authorize?appid=(公众号后台查询)&redirect_uri=(URL编码http://host:port/login_qrcode.html)&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect <br>
 抽奖前权限验证：http://host:port/admin.html<br>
 
 ## 环境依赖
