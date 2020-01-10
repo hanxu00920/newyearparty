@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0" /> 
+  <title>易联达年会扫码登录</title> 
+  <link rel="stylesheet" href="css/weui.min.css" /> 
+ </head> 
+ <body ontouchstart=""> 
+  <div class="weui-form"> 
+   <div class="weui-form__text-area"> 
+    <img src="img/final-ELIANDA3.png" height="66" width="241"/>
+    </br>
+    <div class="weui-form__desc">
+      请您输入信息后确认签到 
+    </div> 
+   </div> 
+   <div class="weui-form__control-area"> 
+    <div class="weui-cells__group weui-cells__group_form"> 
+     <div class="weui-cells weui-cells_form"> 
+      <div class="weui-cell"> 
+       <div class="weui-cell__hd"> 
+        <label class="weui-label">姓名</label> 
+       </div> 
+       <div class="weui-cell__bd"> 
+        <input id="s_name" class="weui-input" required="" placeholder="填写本人姓名" emptytips="填写本人姓名" /> 
+       </div> 
+      </div> 
+      <div class="weui-cell"> 
+       <div class="weui-cell__hd"> 
+        <label class="weui-label">证件后六位</label> 
+       </div> 
+       <div class="weui-cell__bd"> 
+        <input id="s_idlast" class="weui-input" required="" maxlength="6" placeholder="填写本人身份证号后六位" /> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+   <div class="weui-form__tips-area"> 
+    <p class="weui-form__tips"> 请您放心，本页面输入数据为公司内部使用 </p> 
+   </div> 
+   <div class="weui-form__opr-area"> 
+    <a class="weui-btn weui-btn_primary weui-btn_disabled" href="javascript:" id="b_submit">确定</a> 
+   </div> 
+   <div class="weui-form__tips-area"> 
+    <p class="weui-form__tips"> 请不要分享给不认识的人哦 </p> 
+   </div> 
+   <div class="weui-form__extra-area"> 
+    <div class="weui-footer"> 
+     <p class="weui-footer__links"> <a href="javascript:" class="weui-footer__link" id="haha">不要点我</a> </p> 
+     <p class="weui-footer__text">Copyright &copy; 2014-2020 elianda</p> 
+    </div> 
+   </div> 
+  </div> 
+  <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.2.1/weui.min.js"></script> 
+  <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script> 
+  <script type="text/javascript" src="js/zepto.js"></script>
+  <script type="text/javascript" src="js/login_qrcode.js"></script>  
+ </body>
+</html>

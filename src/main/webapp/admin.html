@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" /> 
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0" /> 
+  <title>易联达年会管理鉴权</title>
+</head>
+<body>
+<div id="main">
+请输入鉴权码后进行抽奖操作：<input type="password" id="adminInput" width="60px"/><button id="submit">提交</button>
+</div>
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript" src="js/zepto.js"></script>
+<script type="text/javascript">
+    (function(){
+    	$('#submit').on('click',
+	    function() {
+	    	
+	    	 $.ajax({
+                    type: 'POST',
+                    url: '/main/adminCheck',
+                    data: JSON.stringify({
+		                adminCode: $("#adminInput").val()
+		            }),
+                    contentType: 'application/json',
+                    success: function(response) {
+                    	if(response.retCode != "0000") {
+                    		alert('鉴权失败!'+response.retMsg);
+                    	} else {
+                    		alert('鉴权成功！');
+                    		localStorage.setItem('adminCode', response.adminCode);
+                    	}
+                    },
+                    error: function(xhr, type) {
+                        alert('鉴权Ajax error!');
+                        return '';
+                    }
+                });
+	    	
+	    	var alertDom = weui.alert('你咋这么顽皮？', {
+	    	    buttons: [{
+	    	        label: '三秒后自动关闭',
+	    	        type: 'primary'
+	    	    }]
+	    	});
+	    	setTimeout(function(){ alertDom.hide(); }, 3000);
+	    });
+    })();
+</script>
+</body>
+</html>
