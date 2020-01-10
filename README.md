@@ -101,6 +101,7 @@ wechat_appid  | 微信提供 | 微信后台查询
 ### 后台应用：
 [springboot](https://spring.io/projects/spring-boot/)<br>
 [jedis](https://github.com/xetorthio/jedis)<br>
+[apache-http components](http://hc.apache.org/)
 ### 前端应用：
 [vue](https://cn.vuejs.org/)<br>
 [zetop.js](http://www.zeptojs.cn/)<br>
