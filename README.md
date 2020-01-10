@@ -6,10 +6,13 @@
 ## Install
 mvn install<br>
 ### 提示
-此项目依赖微信公众号实现，可以通过[微信测试公众号](https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login)进行开发测试<br>
+
+#### 此项目依赖微信公众号实现，可以通过[微信测试公众号](https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login)进行开发测试<br>
 抽奖主页面URL：http://host:port/index.html<br>
-二维码生成URL(ps：参数无括号)：https://open.weixin.qq.com/connect/oauth2/authorize?appid=(公众号后台查询)&redirect_uri=(URL编码http://host:port/login_qrcode.html)&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
+二维码生成URL(ps：参数无括号)：微信页面授权获取用户信息URL，可参考[微信开放文档](https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html)<br>
+https://open.weixin.qq.com/connect/oauth2/authorize?appid=(公众号后台查询)&redirect_uri=(URL编码http://host:port/login_qrcode.html)&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect <br>
 抽奖前权限验证：http://host:port/admin.html<br>
+
 ## 环境依赖
 jdk1.8<br>
 tomcat1.8<br>
@@ -94,3 +97,14 @@ login_stop_flag  | 任意值 | 存在即关闭签到入口
 wechat_appsecret  | 微信提供 | 微信后台查询 
 wechat_appid  | 微信提供 | 微信后台查询 
 
+## 项目其他说明 
+### 后台应用：
+[springboot](https://spring.io/projects/spring-boot/)<br>
+[jedis](https://github.com/xetorthio/jedis)<br>
+### 前端应用：
+[vue](https://cn.vuejs.org/)<br>
+[zetop.js](http://www.zeptojs.cn/)<br>
+[微信JS-SDK](https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html)<br>
+### 前端样式：
+[Weui](https://weui.io/)<br>
+[fouber/lottery](https://github.com/fouber/lottery)
