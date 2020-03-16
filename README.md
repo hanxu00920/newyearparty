@@ -1,5 +1,5 @@
 # 易联达年会抽奖程序
-## (newyearparty名字随便起的我知道不太好听但是不想改怎么地吧)
+## (newyearparty)
 前端引用-[fouber/lottery](https://github.com/fouber/lottery)
 ## Background
 年会参与人数越来越多，纸箱抽奖已经不适用
