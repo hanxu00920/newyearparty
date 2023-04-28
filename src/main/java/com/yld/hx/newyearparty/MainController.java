@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.yld.hx.newyearparty.cache.JedisUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.yld.hx.newyearparty.cache.RedisUtils;
 import com.yld.hx.newyearparty.cache.WechatCache;
 import com.yld.hx.newyearparty.pojo.NPResponse;
 import com.yld.hx.newyearparty.pojo.User;
@@ -42,7 +42,7 @@ public class MainController {
 	WechatCache wechatCache;
 
 	@Autowired
-	RedisUtils redis;
+	JedisUtils jedis;
 
 	@Autowired
 	UserService userService;
@@ -89,18 +89,14 @@ public class MainController {
 		log.info("人员签到！");
 		log.info("人员信息：" + user.toString());
 		String userKey = user.getName().trim() + "_" + user.getIdLast().trim().toUpperCase();
-		Jedis jedis = redis.getJedis();
-
 		String loginStopFlag = jedis.get("login_stop_flag");// 停止签到标识
 		if (loginStopFlag != null && !"".equals(loginStopFlag)) {
 			response.setResponse("9999", "签到入口已关闭");
-			jedis.close();
 			return response;
 		}
 
 		if (jedis.exists("login:" + userKey)) {
 			response.setResponse("9999", "请不要重复签到");
-			jedis.close();
 			return response;
 		}
 
@@ -108,7 +104,6 @@ public class MainController {
 		if (allwoUserInfo == null || allwoUserInfo.size() == 0) {
 			log.error("不在人员名单中");
 			response.setResponse("9999", "请确认您是否在人员名单中");
-			jedis.close();
 			return response;
 		}
 		log.info("开始校验经纬度:");
@@ -131,7 +126,6 @@ public class MainController {
 		}
 		if (!inCircle) {
 			response.setResponse("9999", "请确认您是否在签到现场");
-			jedis.close();
 			return response;
 		}
 
@@ -149,7 +143,6 @@ public class MainController {
 		if (sadd <= 0) {
 			log.error(user.getName() + ":使用重复的微信号签到！");
 			response.setResponse("9999", "您的微信号已经签到");
-			jedis.close();
 			return response;
 		}
 
@@ -158,7 +151,6 @@ public class MainController {
 			log.error("存储人员签到信息时失败！");
 			response.setResponse("9999", "存储签到信息时失败");
 			jedis.srem("used_openid", user.getOpenid());
-			jedis.close();
 			return response;
 		} else {
 			Long lpush = jedis.lpush("login_user_list", "login:" + userKey);// 存储到签到人员列表
@@ -167,12 +159,9 @@ public class MainController {
 				log.error("签到人员加入到列表时失败！");
 				response.setResponse("9999", "添加签到人员到列表时失败");
 				jedis.srem("used_openid", user.getOpenid());
-				jedis.close();
 				return response;
 			}
 		}
-
-		jedis.close();
 
 		response.setResponse("0000", "签到成功");
 		return response;
@@ -254,8 +243,6 @@ public class MainController {
 		NPResponse response = new NPResponse();
 
 		log.info("获取当前可以参加抽奖的人员");
-		Jedis jedis = redis.getJedis();
-
 		List<String> allowGameUser = userService.getAllowGameUser();// 获取可以参加抽奖的人
 
 		List<HashMap<String, String>> userList = new ArrayList<HashMap<String, String>>();
@@ -264,7 +251,6 @@ public class MainController {
 			HashMap<String, String> userInfo = (HashMap<String, String>) jedis.hgetAll(userKey);
 			userList.add(userInfo);
 		}
-		jedis.close();
 		response.setResponse("0000", "获取成功");
 		response.put("userDatas", userList);
 		return response;
@@ -282,13 +268,10 @@ public class MainController {
 		String date = CommonUtils.getDate();// 时间戳
 
 		log.info("抽奖开始！");
-		Jedis jedis = redis.getJedis();
-		
 		String adminCode = jedis.get("adminCode");
 		String sessionAdminCode = (String)request.getSession().getAttribute("adminCode");
 		if (sessionAdminCode == null || !sessionAdminCode.equals(adminCode)) {
 			response.setResponse("9999", "鉴权失败！请确认是否进行管理员授权！");
-			jedis.close();
 			return response;
 		}
 
@@ -298,7 +281,6 @@ public class MainController {
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			response.setResponse("9999", "请输入正确的抽奖人数");
-			jedis.close();
 			return response;
 		}
 		String lvl = jsonParam.getString("lvl");// 抽奖等级
@@ -307,7 +289,6 @@ public class MainController {
 
 		if (allowGameUser == null || allowGameUser.size() == 0) {
 			response.setResponse("9999", "所有人都中奖了，如果还想发红包可以单独发给我");
-			jedis.close();
 			return response;
 		}
 		if (pNum > allowGameUser.size()) {
@@ -339,7 +320,6 @@ public class MainController {
 
 		jedis.lpush("game_list", "game:" + date);
 
-		jedis.close();
 		response.setResponse("0000", "抽奖成功");
 		response.put("userDatas", userList);
 
@@ -359,8 +339,6 @@ public class MainController {
 
 		List<Map<String, Object>> games = new ArrayList<Map<String, Object>>();
 		log.info("查询抽奖历史记录！");
-		Jedis jedis = redis.getJedis();
-
 		List<String> gameList = jedis.lrange("game_list", 0, -1);// 获取当前抽奖记录集合
 
 		for (String gameKey : gameList) {
@@ -379,7 +357,6 @@ public class MainController {
 			games.add(obj);
 		}
 
-		jedis.close();
 		response.setResponse("0000", "查询成功");
 		response.put("gameDatas", games);
 		return response;
@@ -395,7 +372,6 @@ public class MainController {
 		NPResponse response = new NPResponse();
 		
 		log.info("抽奖前鉴权！");
-		Jedis jedis = redis.getJedis();
 		String inputAdminCode = retParam.get("adminCode");
 
 		String adminCode = jedis.get("adminCode");
@@ -405,7 +381,6 @@ public class MainController {
 		} else {
 			response.setResponse("9999", "鉴权码输入错误！");
 		}
-		jedis.close();
 		return response;
 	}
 

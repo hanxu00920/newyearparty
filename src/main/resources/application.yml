@@ -1,9 +1,13 @@
-yld:
-   redis:
-      database: 0
-      host: 127.0.0.1
-      port: 8630
-      password: test
+spring:
+  redis:
+    cluster-flag: true
+    host: 127.0.0.1
+    jedis:
+      pool:
+        max-idle: 5
+        min-idle: 5
+        max-active: 10
+        max-wait-ms: 1000
 logging:
   file: newparty.log
   path: ./logs
